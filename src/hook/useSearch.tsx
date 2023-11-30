@@ -50,7 +50,6 @@ const useSearch = () => {
 
       // Handling request cancellation
       if (response.status === 499) {
-        console.log('Request was canceled');
         return;
       }
 
