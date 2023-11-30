@@ -1,5 +1,5 @@
-cd json-search-app
-npm i
+cd json-search-app,
+npm i,
 npm start
 
 Примечание к предупреждению в консоли:
