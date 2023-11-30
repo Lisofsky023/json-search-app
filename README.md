@@ -1,6 +1,6 @@
-`cd json-search-app`
-`npm i`
-`npm start`
+```cd json-search-app```
+```npm i```
+```npm start```
 
 Примечание к предупреждению в консоли:
 
