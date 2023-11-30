@@ -13,7 +13,6 @@ exports.formatNumberForComparison = exports.jsonSearch = void 0;
 const dataLoader_1 = require("./dataLoader");
 function jsonSearch(email, number) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log('Search Parameters:', { email, number });
         try {
             const data = yield (0, dataLoader_1.loadJsonData)();
             if (!data) {
@@ -25,17 +24,16 @@ function jsonSearch(email, number) {
                 const numberMatches = number ? formatNumberForComparison(item.number) === formatNumberForComparison(number) : true;
                 return emailMatches && numberMatches;
             });
-            console.log('Search Result:', result.length > 0 ? result : 'No results found');
             return result;
         }
         catch (error) {
             console.error('Error during data loading or processing:', error);
-            throw error; // или верните пустой массив, если предпочитаете молчаливое проваление
+            throw error;
         }
     });
 }
 exports.jsonSearch = jsonSearch;
 function formatNumberForComparison(phoneNumber) {
-    return phoneNumber.replace(/-/g, '').toLowerCase(); // Предполагая, что сравнение не должно быть чувствительным к регистру
+    return phoneNumber.replace(/-/g, '').toLowerCase();
 }
 exports.formatNumberForComparison = formatNumberForComparison;

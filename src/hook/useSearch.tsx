@@ -23,8 +23,10 @@ const useSearch = () => {
   useEffect(() => {
     return () => abortController.abort();
   }, [abortController]);
-
+  
+  // Function to perform the search
   const performSearch = async ({ email, number }: SearchState) => {
+    // Cancel ongoing request if there is one
     if (requestInProgress) {
       abortController.abort();
     }
@@ -36,6 +38,7 @@ const useSearch = () => {
     setAbortController(newAbortController);
 
     try {
+      // Making the API request
       const response = await fetch('http://localhost:8000/api/search', {
         method: 'POST',
         headers: {
@@ -45,13 +48,15 @@ const useSearch = () => {
         signal: newAbortController.signal,
       });
 
+      // Handling request cancellation
       if (response.status === 499) {
         console.log('Request was canceled');
         return;
       }
 
+      // Processing the response
       const result = await response.json();
-
+      // Setting the search result or error
       if (result && result.result) {
         setSearchResult(result.result);
       } else {
@@ -59,12 +64,14 @@ const useSearch = () => {
       }
 
     } catch (error) {
+      // Handling fetch errors
       if ((error as { name?: string })?.name === 'AbortError') {
         console.log('Request was canceled');
         return;
       }
       setSearchResult([{ message: 'Error during search' }]);
     } finally {
+      // Final state updates after request completion or failure
       if (!newAbortController.signal.aborted) {
         setLoading(false);
       }

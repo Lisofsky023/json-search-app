@@ -9,7 +9,6 @@ const app: Express = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../../build')));
-
 app.post('/api/search', startSearch);
 
 app.get('/', (req: Request, res: Response) => {

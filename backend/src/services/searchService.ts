@@ -11,7 +11,6 @@ export interface SearchResultItem {
 export type SearchResult = SearchResultItem[];
 
 export async function jsonSearch(email: Email, number: PhoneNumber): Promise<SearchResult> {
-  console.log('Search Parameters:', { email, number });
 
   try {
     const data = await loadJsonData();
@@ -28,14 +27,13 @@ export async function jsonSearch(email: Email, number: PhoneNumber): Promise<Sea
       return emailMatches && numberMatches;
     });
 
-    console.log('Search Result:', result.length > 0 ? result : 'No results found');
     return result;
   } catch (error) {
     console.error('Error during data loading or processing:', error);
-    throw error; // или верните пустой массив, если предпочитаете молчаливое проваление
+    throw error;
   }
 }
 
 export function formatNumberForComparison(phoneNumber: PhoneNumber): string {
-  return phoneNumber.replace(/-/g, '').toLowerCase(); // Предполагая, что сравнение не должно быть чувствительным к регистру
+  return phoneNumber.replace(/-/g, '').toLowerCase();
 }

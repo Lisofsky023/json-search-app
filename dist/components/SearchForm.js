@@ -28,10 +28,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const react_input_mask_1 = __importDefault(require("react-input-mask"));
+const InputMaskWithRef = (0, react_1.forwardRef)((props, ref) => react_1.default.createElement(react_input_mask_1.default, Object.assign({}, props, { inputRef: ref })));
 const SearchForm = ({ onSubmit }) => {
+    const inputRef = (0, react_1.useRef)(null);
     const [email, setEmail] = (0, react_1.useState)('');
     const [number, setNumber] = (0, react_1.useState)('');
     const [emailError, setEmailError] = (0, react_1.useState)('');
+    const [numberError, setNumberError] = (0, react_1.useState)('');
+    // Handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -40,7 +44,22 @@ const SearchForm = ({ onSubmit }) => {
             return;
         }
         setEmailError('');
+        if (number && number.includes('_')) {
+            setNumberError('Please complete the number field');
+            return;
+        }
+        setNumberError('');
+        // Trigger onSubmit prop with email and number values
         onSubmit({ email, number });
+    };
+    // Handle changes in the number input
+    const handleNumberChange = (e) => {
+        const newValue = e.target.value;
+        setNumber(newValue);
+        // Clear number error if field is fully filled
+        if (!newValue.includes('_')) {
+            setNumberError('');
+        }
     };
     return (react_1.default.createElement("form", { onSubmit: handleSubmit },
         react_1.default.createElement("label", null, "Email:"),
@@ -50,7 +69,8 @@ const SearchForm = ({ onSubmit }) => {
             }, required: true }),
         emailError && react_1.default.createElement("p", { style: { color: 'red' } }, emailError),
         react_1.default.createElement("label", null, "Number:"),
-        react_1.default.createElement(react_input_mask_1.default, { mask: "99-99-99", maskChar: "_", value: number, onChange: (e) => setNumber(e.target.value) }),
+        react_1.default.createElement(InputMaskWithRef, { ref: inputRef, mask: "99-99-99", maskChar: "_", value: number, onChange: handleNumberChange }),
+        numberError && react_1.default.createElement("p", { style: { color: 'red' } }, numberError),
         react_1.default.createElement("button", { type: "submit" }, "Submit")));
 };
 exports.default = SearchForm;

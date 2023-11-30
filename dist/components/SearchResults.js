@@ -8,11 +8,13 @@ const SearchResults = ({ results, loading }) => {
     if (loading) {
         return react_1.default.createElement("p", null, "Loading...");
     }
+    // Determine if results are array of items or contain a message
     const resultData = Array.isArray(results)
         ? results
         : 'result' in results
             ? results.result
             : [];
+    // Handle no results or error scenarios
     if (!resultData || resultData.length === 0 || ('message' in resultData[0] && resultData[0].message === 'No results found')) {
         return react_1.default.createElement("p", null, "No results found");
     }
